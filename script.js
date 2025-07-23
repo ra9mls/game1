@@ -73,6 +73,12 @@ function focusMobileInput() {
   }
 }
 
+function vibrateError() {
+  if (isMobile() && 'vibrate' in navigator) {
+    navigator.vibrate(200);
+  }
+}
+
 window.addEventListener('keydown', (e) => {
   if (!falling) return;
   const key = e.key.toUpperCase();
@@ -87,6 +93,7 @@ window.addEventListener('keydown', (e) => {
   } else if (letters.includes(key)) {
     errorSound.currentTime = 0;
     errorSound.play();
+    vibrateError();
     letterElem.style.color = '#ff3333';
     setTimeout(() => {
       if (falling) letterElem.style.color = '#0077ff';
@@ -112,6 +119,7 @@ if (mobileInput) {
     } else if (letters.includes(key)) {
       errorSound.currentTime = 0;
       errorSound.play();
+      vibrateError();
       letterElem.style.color = '#ff3333';
       setTimeout(() => {
         if (falling) letterElem.style.color = '#0077ff';
