@@ -42,4 +42,12 @@ body {
   color: #0077ff;
   user-select: none;
   transition: color 0.2s;
+}
+#mobile-input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  width: 1px;
+  height: 1px;
+  z-index: 0;
 } 

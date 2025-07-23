@@ -1,0 +1,15 @@
+{
+  "name": "game1",
+  "version": "1.0.0",
+  "description": "Браузерная обучающая игра для детей, развивающая навыки распознавания и набора русских букв на клавиатуре.",
+  "main": "game.js",
+  "scripts": {
+         "test": "jest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^30.0.5"
+  }
+}

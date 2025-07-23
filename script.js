@@ -13,6 +13,7 @@ let letterElem = null;
 
 const scoreElem = document.getElementById('score');
 const letterArea = document.getElementById('letter-area');
+const mobileInput = document.getElementById('mobile-input');
 
 // Звуки (добавь свои файлы в папку assets)
 const successSound = new Audio('assets/success.mp3');
@@ -59,6 +60,19 @@ function fallStep() {
   }
 }
 
+function isMobile() {
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+}
+
+function focusMobileInput() {
+  if (isMobile() && mobileInput) {
+    mobileInput.style.display = 'block';
+    mobileInput.focus();
+    // Очищаем поле после каждого ввода
+    mobileInput.value = '';
+  }
+}
+
 window.addEventListener('keydown', (e) => {
   if (!falling) return;
   const key = e.key.toUpperCase();
@@ -80,5 +94,42 @@ window.addEventListener('keydown', (e) => {
   }
 });
 
+// Для мобильных: обработка ввода с input
+if (mobileInput) {
+  mobileInput.addEventListener('input', (e) => {
+    if (!falling) return;
+    const value = e.target.value.toUpperCase();
+    if (!value) return;
+    const key = value[0];
+    if (key === currentLetter) {
+      score += 10;
+      updateScore();
+      successSound.currentTime = 0;
+      successSound.play();
+      falling = false;
+      letterElem.style.color = '#00bb00';
+      setTimeout(nextLetter, 500);
+    } else if (letters.includes(key)) {
+      errorSound.currentTime = 0;
+      errorSound.play();
+      letterElem.style.color = '#ff3333';
+      setTimeout(() => {
+        if (falling) letterElem.style.color = '#0077ff';
+      }, 200);
+    }
+    mobileInput.value = '';
+  });
+}
+
 // Запуск игры
-window.onload = startGame; 
+window.onload = () => {
+  startGame();
+  focusMobileInput();
+};
+
+// Если пользователь тапает по экрану — фокусируем input снова
+if (isMobile() && mobileInput) {
+  document.body.addEventListener('touchstart', () => {
+    setTimeout(focusMobileInput, 100);
+  });
+} 
